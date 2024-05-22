@@ -42,27 +42,21 @@ namespace SistemaFinanceiro.Model
         {
             Console.WriteLine($"{_saldo}");
         }
+        // crie o código de teste para testar o método de depósito e saque da conta
 
-        public void saque(decimal valor)
+        public decimal Saque(decimal valor)
         {   
-            if (valor > _saldo) {
-                Console.WriteLine("Valor do saque não pode ser maior que saldo em conta");
-            }
-
-            if (valor <= 0)
+            if(_saldo - valor >= 0)
             {
-                Console.WriteLine("Valor do saque deve ser positivo");
-            }
-
-            if (valor <= _saldo)
+                _saldo -= valor;
+                return _saldo;
+            }else
             {
-                _saldo = _saldo - valor;
-                Console.WriteLine($"Saque de {valor} executado com sucesso. Saldo atual {_saldo}");
+                throw new ArgumentException("Valor do saque ultrapassa o saldo");
             }
 
         }
-
-        public void deposito(long valor)
+        public void Deposito(decimal valor)
         {
             if (valor <= 0)
             {
@@ -76,6 +70,5 @@ namespace SistemaFinanceiro.Model
 
         }
 
-        // crie o código de teste para testar o método de depósito e saque da conta
     }
 }
