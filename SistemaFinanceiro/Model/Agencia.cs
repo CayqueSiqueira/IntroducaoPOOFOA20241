@@ -17,7 +17,14 @@ namespace SistemaFinanceiro.Model
                 _numero = numero;
             }
 
-            public int Numero{ get => _numero; }
+            public Agencia(int numero, string nome, string telefone )
+            {
+                _numero = numero;
+                _nome = nome;
+                _telefone = telefone;
+            }
+
+        public int Numero{ get => _numero; }
             public string Nome
             {
                 get => _nome;
