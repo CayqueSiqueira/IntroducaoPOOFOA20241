@@ -10,18 +10,8 @@ namespace SistemaFinanceiro.Model
     {
         private long _numero;
         private decimal _saldo;
-
-        //criando o construtor ctrl + .
-        public Conta(long numero)
-        {
-            _numero = numero;
-        }
-
-        public Conta(long numero, decimal saldo)
-        {
-            _numero = numero;
-            _saldo = saldo;
-        }
+        private Cliente _cliente;
+        private Agencia _agencia;
 
         public long Numero
         {
@@ -38,6 +28,50 @@ namespace SistemaFinanceiro.Model
 
         }
 
+        public Cliente Cliente
+        {
+            get => _cliente;
+            private set
+            {
+                _cliente = value;
+            }
+        }
+
+        public Agencia Agencia
+        {
+            get => _agencia;
+            private set
+            {
+                _agencia = value;
+            }
+        }
+
+        public Conta(long numero, decimal saldo, Cliente cliente, Agencia agencia)
+        {
+            _numero = numero;
+
+            if (saldo > 10m)
+            {
+                _saldo = saldo;
+            }
+            else
+            {
+                throw new Exception($"Não foi possivel criar a conta. O cliente {cliente.Nome} deve ter saldo maior que R$10,00 para abrir a conta.");
+            }
+
+            if (cliente != null)
+            {
+                _cliente = cliente;
+            }
+            else
+            {
+                throw new Exception($"Não foi possivel criar a conta. A conta deve estar vinculada a um cliente");
+            }
+
+            _agencia = agencia;
+        }
+
+
         public void consulta()
         {
             Console.WriteLine($"{_saldo}");
@@ -46,9 +80,9 @@ namespace SistemaFinanceiro.Model
 
         public decimal Saque(decimal valor)
         {   
-            if(_saldo - valor >= 0)
+            if(_saldo - (valor + 0.10m) >= 0)
             {
-                _saldo -= valor;
+                _saldo -= valor + 0.10m;
                 return _saldo;
             }else
             {
@@ -68,6 +102,24 @@ namespace SistemaFinanceiro.Model
                 Console.WriteLine($"Deposito realizado com sucesso. Saldo atual {_saldo}");
             }
 
+        }
+
+        public void Transferencia(decimal valor, Conta conta)
+        {
+            if (_saldo - valor >= 0)
+            {
+                _saldo -= valor;
+                conta.Deposito(valor);
+
+                Console.WriteLine($"Transferência realizada com sucesso.");
+                Console.WriteLine($"Saldo da conta destino: {conta.Saldo:C}");
+                Console.WriteLine($"Saldo da conta atual: {_saldo:C}");
+            }
+            else
+            {
+                //Console.WriteLine("Saldo insuficiente para transferência");
+                throw new ArgumentException("Saldo insuficiente para transferência");
+            }
         }
 
     }

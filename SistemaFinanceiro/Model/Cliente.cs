@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace SistemaFinanceiro.Model
 {
-    internal class Cliente
+    public class Cliente
     {
         private string _nome;
         private string _cpf;
         private DateTime _dataNascimento;
-        private List<Conta> _contas;
+
+        
+        
         public string Nome
         {
             get => _nome; 
@@ -50,11 +52,7 @@ namespace SistemaFinanceiro.Model
             }
         }
 
-        public List<Conta> Contas
-        {
-            get => _contas; 
-            set => _contas = value; 
-        }
+
 
         public Cliente(string nome, string cpf, DateTime dataNascimento)
         {
@@ -63,10 +61,89 @@ namespace SistemaFinanceiro.Model
             DataNascimento = dataNascimento;
         }
 
-        public void AdicionarConta(Conta conta)
+        public int Idade
         {
-            Contas.Add(conta);
+            get { return DateTime.Now.Year - DataNascimento.Year; }
         }
 
+        public string ConverterParaRomano()
+        {
+            int idade = Idade;
+            string romano = "";
+            if (idade > 0)
+            {
+                if (idade >= 1000)
+                {
+                    romano += "M";
+                    idade -= 1000;
+                }
+                if (idade >= 900)
+                {
+                    romano += "CM";
+                    idade -= 900;
+                }
+                if (idade >= 500)
+                {
+                    romano += "D";
+                    idade -= 500;
+                }
+                if (idade >= 400)
+                {
+                    romano += "CD";
+                    idade -= 400;
+                }
+                while (idade >= 100)
+                {
+                    romano += "C";
+                    idade -= 100;
+                }
+                if (idade >= 90)
+                {
+                    romano += "XC";
+                    idade -= 90;
+                }
+                if (idade >= 50)
+                {
+                    romano += "L";
+                    idade -= 50;
+                }
+                if (idade >= 40)
+                {
+                    romano += "XL";
+                    idade -= 40;
+                }
+                while (idade >= 10)
+                {
+                    romano += "X";
+                    idade -= 10;
+                }
+                if (idade >= 9)
+                {
+                    romano += "IX";
+                    idade -= 9;
+                }
+                if (idade >= 5)
+                {
+                    romano += "V";
+                    idade -= 5;
+                }
+                if (idade >= 4)
+                {
+                    romano += "IV";
+                    idade -= 4;
+                }
+                while (idade >= 1)
+                {
+                    romano += "I";
+                    idade -= 1;
+                }
+                return romano;
+            }
+            else
+            {
+                return "Idade inválida";
+
+            }
+        }
     }
 }
